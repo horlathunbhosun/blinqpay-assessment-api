@@ -14,7 +14,7 @@ class Post extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['title', 'content', 'category_id'];
+    protected $fillable = ['title', 'excerpt', 'content', 'category_id', 'thumbnail', 'main_image', 'images', 'status', 'author_id'];
 
 
     public static function boot(): void
@@ -24,20 +24,23 @@ class Post extends Model
             $model->uuid = (string)Str::uuid();
         });
 
-        static::deleting(function ($model) {
-            $model->author()->delete();
-            $model->category()->delete();
-        });
+
     }
 
 
     protected function casts(): array
     {
         return [
-            'status' => GenericStatusEnum::class
+            'status' => GenericStatusEnum::class,
+            'images' => 'array'
         ];
     }
 
+
+    public function postImages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PostImage::class);
+    }
 
 
     public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -54,6 +57,17 @@ class Post extends Model
     {
         return self::where('uuid', $uuid)->first();
     }
+    public static function getPostWithUUIDAndRelationship($uuid)
+    {
+        return self::with('author', 'category')->where('uuid', $uuid)->first();
+    }
+
+    public static function getAllPostByLoggedInUser($perPage = 10)
+    {
+        return self::with('author', 'category')
+            ->where('author_id', auth()->id())->orderBy('created_at', 'desc')->paginate($perPage);
+    }
+
 
     public static function getPostWithRelationshipAndPagination($perPage = 10)
     {

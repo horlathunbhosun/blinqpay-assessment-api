@@ -18,8 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('title');
             $table->string('slug');
-            $table->longText('post_content');
+            $table->text('excerpt');
+            $table->longText('content');
             $table->enum('status', ['ACTIVE','INACTIVE']);
+            $table->string('thumbnail')->nullable();
+            $table->string('main_image')->nullable();
+            $table->json('images')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

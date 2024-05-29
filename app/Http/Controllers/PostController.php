@@ -27,7 +27,16 @@ class PostController extends Controller
         if (isset($posts['status']) && $posts['status'] === false) {
             return $this->errorResponse($posts['message'], '', 400);
         }
-        return $this->successResponse(PostResource::collection($posts['data']), $posts['message'], 200);
+        return $this->successResponse(PostResource::collection($posts['data']), $posts['message'], $posts['statusCode']);
+    }
+
+    public function allPostByAuthor(): \Illuminate\Http\JsonResponse
+    {
+        $posts = $this->postService->allPostsByAuthor();
+        if (isset($posts['status']) && $posts['status'] === false) {
+            return $this->errorResponse($posts['message'], '', 400);
+        }
+        return $this->successResponse(PostResource::collection($posts['data']), $posts['message'], $posts['statusCode']);
     }
 
 
@@ -40,7 +49,7 @@ class PostController extends Controller
         if (isset($post['status']) && $post['status'] === false) {
             return $this->errorResponse($post['message'], '', 400);
         }
-        return $this->successResponse(new PostResource($post['data']), $post['message'], 201);
+        return $this->successResponse(new PostResource($post['data']), $post['message'],  $post['statusCode']);
     }
 
     /**
@@ -52,7 +61,7 @@ class PostController extends Controller
         if (isset($post['status']) && $post['status'] === false) {
             return $this->errorResponse($post['message'], '', 400);
         }
-        return $this->successResponse(new PostResource($post['data']), $post['message'], 200);
+        return $this->successResponse(new PostResource($post['data']), $post['message'],  $post['statusCode']);
     }
 
 
@@ -65,7 +74,7 @@ class PostController extends Controller
         if (isset($post['status']) && $post['status'] === false) {
             return $this->errorResponse($post['message'], '', 400);
         }
-        return $this->successResponse(new PostResource($post['data']), $post['message'], 200);
+        return $this->successResponse(new PostResource($post['data']), $post['message'],  $post['statusCode']);
     }
 
     public function updatePostStatus(string $uuid): \Illuminate\Http\JsonResponse
@@ -74,7 +83,7 @@ class PostController extends Controller
         if (isset($post['status']) && $post['status'] === false) {
             return $this->errorResponse($post['message'], '', 400);
         }
-        return $this->successResponse(new PostResource($post['data']), $post['message'], 200);
+        return $this->successResponse(new PostResource($post['data']), $post['message'],  $post['statusCode']);
     }
 
     /**
@@ -86,6 +95,6 @@ class PostController extends Controller
         if (isset($post['status']) && $post['status'] === false) {
             return $this->errorResponse($post['message'], '', 400);
         }
-        return $this->successResponse($post['data'], $post['message'], 200);
+        return $this->successResponse($post['data'], $post['message'],  $post['statusCode']);
     }
 }

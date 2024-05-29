@@ -22,7 +22,16 @@ class LoginRequest extends APIRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|string|email|max:255|exists:users,email',
+            'password' => 'required|string|min:8',
+        ];
+    }
+
+
+    public function messages()
+    {
+        return [
+            'email.exists' => 'The email address you provided does not match our records.',
         ];
     }
 }

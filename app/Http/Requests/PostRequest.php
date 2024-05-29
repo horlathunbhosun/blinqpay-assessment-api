@@ -23,18 +23,46 @@ class PostRequest extends APIRequest
     {
         if ($this->isMethod('post')) {
             return [
-                'title' => 'required|max:255|string|unique:posts,title',
+                'post_title' => 'required|max:255|string|unique:posts,title',
                 'category_id' => 'required|exists:categories,uuid',
-                'content' => 'required|string',
+                'post_content' => 'required|string',
+                'post_excerpt' => 'required|string',
+                'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'main_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ];
         }
         if ($this->isMethod('patch')) {
             return [
-                'title' =>'required|max:255|string|unique:posts,title',
+                'post_title' => 'required|max:255|string|unique:posts,title',
                 'category_id' => 'required|exists:categories,uuid',
-                'content' => 'required|string',
+                'post_content' => 'required|string',
+                'post_excerpt' => 'required|string',
+                'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'main_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            ];
+        }
+
+        if ($this->isMethod('put')) {
+            return [
+                'post_title' => 'required|max:255|string|unique:posts,title',
+                'category_id' => 'required|exists:categories,uuid',
+                'post_content' => 'required|string',
+                'post_excerpt' => 'required|string',
+                'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'main_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ];
         }
         return [];
+    }
+
+
+    public function messages()
+    {
+        return [
+            'category_id.exists' => 'The category id you provided does not match our records.',
+        ];
     }
 }

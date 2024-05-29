@@ -21,7 +21,8 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'post_content' => $this->faker->paragraph,
+            'excerpt' => $this->faker->sentence,
+            'content' => $this->faker->paragraph,
             'slug' => $this->faker->slug,
             'status' => GenericStatusEnum::ACTIVE,
             'category_id' => Category::factory(),
