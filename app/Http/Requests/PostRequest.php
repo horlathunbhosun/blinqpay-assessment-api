@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class PostRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,8 +21,20 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        if ($this->isMethod('post')) {
+            return [
+                'title' => 'required|max:255|string|unique:posts,title',
+                'category_id' => 'required|exists:categories,uuid',
+                'content' => 'required|string',
+            ];
+        }
+        if ($this->isMethod('patch')) {
+            return [
+                'title' =>'required|max:255|string|unique:posts,title',
+                'category_id' => 'required|exists:categories,uuid',
+                'content' => 'required|string',
+            ];
+        }
+        return [];
     }
 }

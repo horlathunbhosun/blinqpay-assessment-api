@@ -24,4 +24,9 @@ class Category extends Model
     {
         return self::where('uuid', $uuid)->first();
     }
+
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
 }

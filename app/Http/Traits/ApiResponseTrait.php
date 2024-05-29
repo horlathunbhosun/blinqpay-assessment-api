@@ -19,11 +19,12 @@ trait ApiResponseTrait
     }
 
 
-    public function errorResponse($message="An error occurred", $code = Response::HTTP_BAD_REQUEST): \Illuminate\Http\JsonResponse
+    public function errorResponse($message="An error occurred", $errors="", $code = Response::HTTP_BAD_REQUEST): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'status' => false,
             'message' => $message,
+            'errors' => $errors,
             'status_code' => $code
         ], $code );
     }

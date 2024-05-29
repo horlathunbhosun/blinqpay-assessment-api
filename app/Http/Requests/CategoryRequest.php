@@ -24,12 +24,12 @@ class CategoryRequest extends APIRequest
 
         if ($this->isMethod('post')) {
             return [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => 'required|max:255|string:unique:categories,name',
             ];
         }
         if ($this->isMethod('patch')) {
             return [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => 'required|max:255|string:unique:categories,name',
             ];
         }
            return [];

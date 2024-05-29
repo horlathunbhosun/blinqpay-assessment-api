@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
     //get category by uuid
 
-    public function show(string $uuid)
+    public function show(string $uuid): \Illuminate\Http\JsonResponse
     {
         $category = $this->categoryService->getCategory($uuid);
         if (isset($category['status']) && $category['status'] === false) {
@@ -44,11 +44,11 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): \Illuminate\Http\JsonResponse
     {
         $category = $this->categoryService->createCategory($request);
         if (isset($category['status']) && $category['status'] === false) {
-            return $this->errorResponse($category['message'],400);
+            return $this->errorResponse($category['message'], "",400);
         }
         return $this->successResponse(new CategoryResource($category['data']), $category['message'], $category['statusCode']);
     }
@@ -57,11 +57,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryRequest $request, string $uuid)
+    public function update(CategoryRequest $request, string $uuid): \Illuminate\Http\JsonResponse
     {
         $categoryUpdate = $this->categoryService->updateCategory($request, $uuid);
         if (isset($categoryUpdate['status']) && $categoryUpdate['status'] === false) {
-            return $this->errorResponse($categoryUpdate['message'],400);
+            return $this->errorResponse($categoryUpdate['message'],"", 400);
         }
         return $this->successResponse(new CategoryResource($categoryUpdate['data']), $categoryUpdate['message'], $categoryUpdate['statusCode']);
     }
@@ -69,11 +69,11 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $uuid)
+    public function destroy(string $uuid): \Illuminate\Http\JsonResponse
     {
         $categoryDelete = $this->categoryService->deleteCategory($uuid);
         if (isset($categoryDelete['status']) && $categoryDelete['status'] === false) {
-            return $this->errorResponse($categoryDelete['message'],400);
+            return $this->errorResponse($categoryDelete['message'],"", 400);
         }
         return $this->successResponse([], $categoryDelete['message'], $categoryDelete['statusCode']);
     }

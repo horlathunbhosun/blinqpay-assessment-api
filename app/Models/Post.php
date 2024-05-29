@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Enums\GenericStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,16 +23,41 @@ class Post extends Model
         static::creating(function ($model) {
             $model->uuid = (string)Str::uuid();
         });
+
+        static::deleting(function ($model) {
+            $model->author()->delete();
+            $model->category()->delete();
+        });
     }
 
-    public function author()
+
+    protected function casts(): array
+    {
+        return [
+            'status' => GenericStatusEnum::class
+        ];
+    }
+
+
+
+    public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function category()
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public static function getPostWithUUID($uuid)
+    {
+        return self::where('uuid', $uuid)->first();
+    }
+
+    public static function getPostWithRelationshipAndPagination($perPage = 10)
+    {
+        return self::with('author', 'category')->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
 }
