@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Enums\GenericStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -20,7 +22,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status',
     ];
+
+    public static function boot(): void
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string)Str::uuid();
+        });
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,6 +54,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => GenericStatusEnum::class
         ];
     }
 }
