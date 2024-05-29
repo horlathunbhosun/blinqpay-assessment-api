@@ -17,6 +17,7 @@ composer install
 ```
 
 2. Configure the environment variables with your database credentials in the `.env` file. You can copy the `.env.example` file and rename it to `.env` and fill in the values.
+
 3. Run the migrations
 ```bash
 php artisan migrate
@@ -30,6 +31,13 @@ php artisan test
 ```bash
 php artisan serve
 ```
+
+
+**important note: create and sqlite database for testing and copy the env.testing.example to the .env.testing 
+the sqlite database is used for testing purposes only, and it is created in the databased directory in the root of the project**
+
+
+
 
 ## API Endpoints
   Postman documentation link is [here](https://documenter.getpostman.com/view/24437385/2sA3QtfXC2)
