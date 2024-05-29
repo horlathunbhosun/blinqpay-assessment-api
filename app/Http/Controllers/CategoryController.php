@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Http\Services\CategoryService;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -25,54 +27,54 @@ class CategoryController extends Controller
         if (isset($categories['status']) && $categories['status'] === false) {
             return $this->errorResponse($categories['message'],400);
         }
-        return $this->successResponse($categories['data'], $categories['message'], $categories['statusCode']);
+        return $this->successResponse(CategoryResource::collection($categories['data']), $categories['message'], $categories['statusCode']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    //get category by uuid
+
+    public function show(string $uuid)
     {
-        //
+        $category = $this->categoryService->getCategory($uuid);
+        if (isset($category['status']) && $category['status'] === false) {
+            return $this->errorResponse($category['message'],400);
+        }
+        return $this->successResponse(new CategoryResource($category['data']), $category['message'], $category['statusCode']);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $category = $this->categoryService->createCategory($request);
+        if (isset($category['status']) && $category['status'] === false) {
+            return $this->errorResponse($category['message'],400);
+        }
+        return $this->successResponse(new CategoryResource($category['data']), $category['message'], $category['statusCode']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, string $uuid)
     {
-        //
+        $categoryUpdate = $this->categoryService->updateCategory($request, $uuid);
+        if (isset($categoryUpdate['status']) && $categoryUpdate['status'] === false) {
+            return $this->errorResponse($categoryUpdate['message'],400);
+        }
+        return $this->successResponse(new CategoryResource($categoryUpdate['data']), $categoryUpdate['message'], $categoryUpdate['statusCode']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $uuid)
     {
-        //
+        $categoryDelete = $this->categoryService->deleteCategory($uuid);
+        if (isset($categoryDelete['status']) && $categoryDelete['status'] === false) {
+            return $this->errorResponse($categoryDelete['message'],400);
+        }
+        return $this->successResponse([], $categoryDelete['message'], $categoryDelete['statusCode']);
     }
 }

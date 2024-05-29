@@ -21,8 +21,17 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+
+        if ($this->isMethod('post')) {
+            return [
+                'name' => ['required', 'string', 'max:255'],
+            ];
+        }
+        if ($this->isMethod('patch')) {
+            return [
+                'name' => ['required', 'string', 'max:255'],
+            ];
+        }
+           return [];
     }
 }

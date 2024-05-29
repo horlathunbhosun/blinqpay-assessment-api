@@ -14,7 +14,6 @@ class CategoryService
         try {
             $category = new Category();
             $category->name = $request->name;
-            $category->status = GenericStatusEnum::ACTIVE;
             $category->save();
             return $this->successObject($category, 'Category created successfully', 201);
         }catch (\Exception $e) {
@@ -22,12 +21,25 @@ class CategoryService
         }
 
     }
-
-    // update category
-    public function updateCategory($request, $category): array
+    // Get category by id
+    public function getCategory($uuid): array
     {
         try {
-            $categoryData = Category::find($category->id);
+            $categoryData = Category::getCategoryWithUUID($uuid);
+            if (!$categoryData) {
+                return $this->errorObject('Category not found');
+            }
+            return $this->successObject($categoryData, 'Category fetched successfully', 200);
+        }catch (\Exception $e) {
+            return $this->errorObject($e->getMessage());
+        }
+    }
+
+    // update category
+    public function updateCategory($request, $uuid): array
+    {
+        try {
+            $categoryData = Category::getCategoryWithUUID($uuid);
             if (!$categoryData) {
                 return $this->errorObject('Category not found');
             }
@@ -40,10 +52,10 @@ class CategoryService
     }
 
     // Delete category by id
-    public function deleteCategory($category): array
+    public function deleteCategory($uuid): array
     {
         try {
-            $categoryData = Category::find($category->id);
+            $categoryData = Category::getCategoryWithUUID($uuid);
             if (!$categoryData) {
                 return $this->errorObject('Category not found');
             }
@@ -65,27 +77,7 @@ class CategoryService
         }
     }
 
-    // activate and deactivate category status
-    public function updateStatus($request,$category): array
-    {
-        try {
-            $categoryData = Category::find($category->id);
-            if (!$categoryData) {
-                return $this->errorObject('Category not found');
-            }
-            if ($request->status == GenericStatusEnum::ACTIVE) {
-                $categoryData->status = GenericStatusEnum::ACTIVE;
-                $categoryData->save();
-                return $this->successObject($categoryData, 'Category activated successfully', 200);
-            }
 
-            $categoryData->status = GenericStatusEnum::INACTIVE;
-            $categoryData->save();
-            return $this->successObject($categoryData, 'Category deactivated successfully', 200);
-        }catch (\Exception $e) {
-            return $this->errorObject($e->getMessage());
-        }
-    }
 
 
 
