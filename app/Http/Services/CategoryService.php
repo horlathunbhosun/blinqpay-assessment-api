@@ -79,6 +79,19 @@ class CategoryService
 
 
 
+    public function getCategoriesCount(): array
+    {
+        try {
+            $categories = Category::getCategoryCount();
+            return $this->successObject($categories, 'Categories count fetched successfully', 200);
+        }catch (\Exception $e) {
+            return $this->errorObject($e->getMessage());
+        }
+    }
+
+
+
+
 
 
 

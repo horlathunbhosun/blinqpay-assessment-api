@@ -62,6 +62,11 @@ class Post extends Model
         return self::with('author', 'category')->where('uuid', $uuid)->first();
     }
 
+    public static function getPostWithSlugAndRelationship($slug)
+    {
+        return self::with('author', 'category')->where('slug', $slug)->first();
+    }
+
     public static function getAllPostByLoggedInUser($perPage = 10)
     {
         return self::with('author', 'category')
@@ -69,9 +74,14 @@ class Post extends Model
     }
 
 
-    public static function getPostWithRelationshipAndPagination($perPage = 10)
+    public static function getPostWithRelationshipAndPagination($category, $perPage = 10)
     {
         return self::with('author', 'category')->orderBy('created_at', 'desc')->paginate($perPage);
+    }
+
+    public static function getPostWithCount()
+    {
+        return self::where('author_id', auth()->id())->count();
     }
 
 }

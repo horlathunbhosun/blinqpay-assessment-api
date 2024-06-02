@@ -41,6 +41,18 @@ class CategoryController extends Controller
         return $this->successResponse(new CategoryResource($category['data']), $category['message'], $category['statusCode']);
     }
 
+
+    //get posts counts for auth user
+
+    public function showCategoryCount(): \Illuminate\Http\JsonResponse
+    {
+        $category = $this->categoryService->getCategoriesCount();
+        if (isset($category['status']) && $category['status'] === false) {
+            return $this->errorResponse($category['message'],400);
+        }
+        return $this->successResponse(new CategoryResource($category['data']), $category['message'], $category['statusCode']);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

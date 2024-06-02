@@ -132,7 +132,7 @@ class PostTest extends TestCase
 
     public function test_retrieve_a_single_post(): void
     {
-        $response = $this->getJson("/api/posts/show/{$this->post->uuid}", ['Authorization' => 'Bearer ' . $this->token] );
+        $response = $this->getJson("/api/posts/show/{$this->post->slug}", ['Authorization' => 'Bearer ' . $this->token] );
 
 
         $response->assertStatus(200);

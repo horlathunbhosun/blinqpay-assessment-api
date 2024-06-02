@@ -28,6 +28,20 @@ class PostService
         }
     }
 
+    //Get all post count
+    public function allPostsCount(): array
+    {
+        try{
+            // Get all posts count
+            $posts = Post::getPostWithCount();
+            return $this->successObject($posts, 'Posts count fetched successfully', 200);
+        }catch (\Exception $e) {
+            return $this->errorObject($e->getMessage());
+        }
+    }
+
+    // Get all posts by author
+
     public function allPostsByAuthor(): array
     {
         try{
@@ -42,11 +56,11 @@ class PostService
     }
 
     // Get single post
-    public function singlePost($uuid): array
+    public function singlePost($slug): array
     {
         try{
             // Get post with relationship
-            $post = Post::getPostWithUUIDAndRelationship($uuid);
+            $post = Post::getPostWithSlugAndRelationship($slug);
             // Check if post exists
             if (!$post) {
                 return $this->errorObject('Post not found');

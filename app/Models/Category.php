@@ -25,8 +25,20 @@ class Category extends Model
         return self::where('uuid', $uuid)->first();
     }
 
+    public static function getCategoryWithUUIDAndRelationship($uuid)
+    {
+        return self::with('posts')->where('uuid', $uuid)->first();
+    }
+
+    //get category count
+    public static function getCategoryCount()
+    {
+        return self::count();
+    }
+
     public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Post::class);
     }
+
 }

@@ -31,7 +31,10 @@ php artisan test
 ```bash
 php artisan serve
 ```
-
+lastly please dont forget to run this command for the images you want
+```bash
+php artisan storage:link
+```
 
 **important note: create and sqlite database for testing and copy the env.testing.example to the .env.testing 
 the sqlite database is used for testing purposes only, and it is created in the databased directory in the root of the project**

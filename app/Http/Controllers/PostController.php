@@ -39,6 +39,15 @@ class PostController extends Controller
         return $this->successResponse(PostResource::collection($posts['data']), $posts['message'], $posts['statusCode']);
     }
 
+    //get posts count
+    public function postCount(): \Illuminate\Http\JsonResponse
+    {
+        $posts = $this->postService->allPostsCount();
+        if (isset($posts['status']) && $posts['status'] === false) {
+            return $this->errorResponse($posts['message'], '', 400);
+        }
+        return $this->successResponse($posts['data'], $posts['message'], $posts['statusCode']);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -55,9 +64,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $uuid): \Illuminate\Http\JsonResponse
+    public function show(string $slug): \Illuminate\Http\JsonResponse
     {
-        $post = $this->postService->singlePost($uuid);
+        $post = $this->postService->singlePost($slug);
         if (isset($post['status']) && $post['status'] === false) {
             return $this->errorResponse($post['message'], '', 400);
         }
