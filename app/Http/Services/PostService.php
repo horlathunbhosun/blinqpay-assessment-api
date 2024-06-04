@@ -7,6 +7,7 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -34,7 +35,8 @@ class PostService
         try{
             // Get all posts count
             $posts = Post::getPostWithCount();
-            return $this->successObject($posts, 'Posts count fetched successfully', 200);
+            $category = Category::getCategoryCount();
+            return $this->successObject(['category_count' => $category, 'posts_count' => $posts], 'Posts count fetched successfully', 200);
         }catch (\Exception $e) {
             return $this->errorObject($e->getMessage());
         }
@@ -129,11 +131,12 @@ class PostService
             if (!$post) {
                 return $this->errorObject('Post not found');
             }
+            $title = $request->post_title ?? $post->title;
             // Update post
-            $post->title = $request->post_title;
-            $post->slug = Str::slug($request->post_title);
-            $post->excerpt = $request->post_excerpt;
-            $post->content = $request->post_content;
+            $post->title = $title;
+            $post->slug = Str::slug($title);
+            $post->excerpt = $request->post_excerpt ?? $post->excerpt;
+            $post->content = $request->post_content ?? $post->content;
             $post->category_id = $category_id->id;
             if ($request->hasFile('thumbnail')) {
                 // Delete the old thumbnail if exists

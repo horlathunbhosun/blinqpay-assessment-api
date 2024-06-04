@@ -85,7 +85,7 @@ class AuthenticationTest extends TestCase
 
         $token = $loginResponse->json()['data']['token'];
 
-        $response = $this->postJson('/api/auth/logout', [], [
+        $response = $this->getJson('/api/auth/logout',  [
             'Authorization' => 'Bearer ' . $token,
         ]);
 

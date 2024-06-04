@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Http\Services\PostService;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -77,7 +79,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostRequest $request, string $uuid): \Illuminate\Http\JsonResponse
+    public function update(UpdatePostRequest $request, string $uuid): \Illuminate\Http\JsonResponse
     {
         $post = $this->postService->updatePost($request, $uuid);
         if (isset($post['status']) && $post['status'] === false) {

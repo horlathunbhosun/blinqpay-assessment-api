@@ -204,7 +204,7 @@ class PostTest extends TestCase
         // mock the storage
         Storage::fake('public');
 
-        $response = $this->patchJson("/api/posts/update/{$this->post->uuid}", $postData, ['Authorization' => 'Bearer ' . $this->token]);
+        $response = $this->postJson("/api/posts/update/{$this->post->uuid}", $postData, ['Authorization' => 'Bearer ' . $this->token]);
 
 
         $response->assertStatus(200);
