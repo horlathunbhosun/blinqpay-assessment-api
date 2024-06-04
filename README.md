@@ -8,7 +8,8 @@
 ### Installation
 1. Clone the repository
 ```bash
-git clone the repository
+git clone https://github.com/horlathunbhosun/blinqpay-assessment-api.git
+cd blinqpay-assessment-api
 ```
 
 after cloning the repository, you need to install the dependencies by running the following command:
