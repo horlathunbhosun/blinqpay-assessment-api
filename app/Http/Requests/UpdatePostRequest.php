@@ -22,7 +22,7 @@ class UpdatePostRequest extends APIRequest
     public function rules(): array
     {
             return [
-                'post_title' => 'max:255|string|unique:posts,title',
+                'post_title' => 'max:255|string',
                 'category_id' => 'exists:categories,uuid',
                 'post_content' => 'string',
                 'post_excerpt' => 'string',
